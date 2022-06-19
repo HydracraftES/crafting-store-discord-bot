@@ -1,0 +1,98 @@
+{
+    "api_token": "",
+    "url": "https://api.craftingstore.net/v7",
+    "bot_token": "",
+    "prefix": "/",
+
+    "admin_permissions": [],
+    "rol_id": {
+        "create_gift_cards": [],
+        "search_transactions": [],
+        "get_bought_items_list": [],
+        "search_giftcard": []
+    },
+
+    "whitelist_servers": [],
+
+    "embed_config": {
+        "title": "Hydracraft Network",
+        "color": "0xe90707",
+        "thumbnail_url": "https://hydracraft.es/custom/templates/Lithium/uploads/vlf8lpi5qy7co1klozke-1.png"
+    },
+
+    "language": {
+        "api_messages": {
+            "error_messages": {
+
+                "connection_err": "Hubo un problema al usar la API.",
+                "user_err": "El usuario no tiene ningún historial de compras.",
+                "transaction_err": "La id de transacción no existe.",
+                "exception_err": "Hubo un problema al tratar de crear la giftcard."
+
+            }
+            
+        },
+        
+        "commands": {
+            "help": {
+                "command": "help",
+                "description": "Devuelve la lista de comandos."
+            }, 
+            "search_transaction": {
+                "command": "buscar",
+                "description": "Este comando te permite buscar por la id de transacción de una compra."
+            },
+            "get_player_list": {
+                "command": "compras",
+                "description": "Este comando te devuelve las ÚLTIMAS 25 compras del usuario."
+            },
+            "create_giftcard": {
+                "command": "crear-giftcard",
+                "description": "Este comando creará una giftcard y un token privado para caso de recuperación."
+            },
+            "search_giftcard": {
+                "command": "recuperar-giftcard",
+                "description": "Este comando te permite recuperar una giftcard del usuario. Recuerda, si colocas solo el nick del usuario, devolverá un menú desplegable con todas sus giftcards, en cambio, si colocas el token privado, solo devolverá la información del giftcard en concreto."
+            }
+        },
+        
+        "embed_messages": {
+            "description": "Este bot ayudara a validar los pagos hechos en la tienda.",
+            "footer": "© Hydracraft Network",
+            "crafting_responses": {
+                "transactionId": "ID de transacción",
+                "price": "Precio",
+                "packageName": "Producto",
+                "inGameName": "Jugador",
+                "email": "Email",
+                "notes": "Notas",
+                "gateway": "Método de pago",
+                "timestamp": "Fecha",
+                "currency": "€"
+            },
+            "embed_gift_card": {
+                "embed_titles": {
+                    "code": "Código",
+                    "amount": "Saldo",
+                    "guide_title": "¿Cómo se usa?",
+                    "token": "Token privado"
+                },
+                "gratitude": "Gracias por su compra, se ha creado una tarjeta regalo con la misma cantidad que hemos recibido de tu código de paysafecard.",
+                "banner": "http://hydracraft.es/botimg/gift_card_banner.png",
+                "instructions": "Para usar el código debes ir a la tienda de HydraCraft y meter en la cesta lo que quieras comprar. Cuando hagas esto verás un cuadro para introducir el código con un botón llamado 'Redimir' a su derecha. Se descontará lo que hayas metido en la cesta con el valor del código de paysafecard. **Se puede usar en varias compras, una vez se acabe todo el saldo se eliminará el código**\nEl token privado es por si quieres ver el estado de tu giftcard, o reclamar el giftcard en caso de pérdida. **No lo pierdas, guárdalo bien y no se lo envíes a nadie, en caso de perder el token y/o el giftcard, abra un ticket en tienda mencionando al developer o a Iván, y ellos te ayudarán.**",
+                "banner_img": "http://hydracraft.es/botimg/gift_card_banner.png"
+            },
+            "help_message": {
+                "name": "Lista de comandos"
+            }
+        },
+
+        "error_messages": {
+            "permissions_err": "No tienes permisos para usar este comando.",
+            "invalid_command": "Uso correcto del comando: ",
+            "bad_usage": "Usa los argumentos del comando.",
+            "one_of_them": "Solo necesitamos uno de los 2 argumentos.",
+            "user_no_giftcards": "El usuario no tiene giftcards guardadas en la base de datos."
+        }
+    }
+}
