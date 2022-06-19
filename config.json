@@ -52,7 +52,7 @@
             },
             "search_giftcard": {
                 "command": "recuperar-giftcard",
-                "description": "Este comando te permite recuperar una giftcard del usuario. Recuerda, si colocas solo el nick del usuario, devolverá un menú desplegable con todas sus giftcards, en cambio, si colocas el token privado, solo devolverá la información del giftcard en concreto."
+                "description": "Este comando te permite recuperar una giftcard del usuario."
             }
         },
         
