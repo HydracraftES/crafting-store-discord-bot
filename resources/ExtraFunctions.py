@@ -1,22 +1,24 @@
-import json, sqlite3, hashlib, random, datetime
+import json, mysql.connector, hashlib, random, datetime
 
 class ExtraFunctions:
     
-    def __sqlite_connection(self):
+    def __mysql_connection(self, user, password, database, host):
         
-        '''
-            This is a private method which will return the local connection throught the database
-        '''
-        conn = sqlite3.connect("./database.db")
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
         
-        return conn
+        connection = mysql.connector.connect(
+            host = self.host,
+            user = self.user,
+            password = self.password,
+            database = self.database
+        )
+        
+        return connection
     
     def check_permissions(self, permissions, rol_ids, user_id):
-        
-        '''
-            This method will check if an user has the admin permissions or it has some of the needed roles.
-        '''
-        
         self.permissions = permissions
         self.rol_ids = rol_ids
         self.user_id = user_id
@@ -37,133 +39,115 @@ class ExtraFunctions:
         
         return has_rol
     
-    def save_gift_card(self, user, gift_id, gift_code, amount):
+    def save_gift_card(self, username, gift_id, gift_code, amount):
         
-        '''
-            This method will save the giftcards in the database.
-        '''
-                
-        self.user = user
+        self.username = username
         self.gift_id = gift_id
         self.gift_code = gift_code
         self.amount = amount
+        user_id = self.username.id
+        date = datetime.datetime.now()
         
-        rand_tk = str(random.randint(6500, 100300)) + "" + self.user
-        private_token = hashlib.sha1(rand_tk.encode()).hexdigest()
+        with open('./config.json', encoding="utf-8") as c:
+            config = json.load(c)
         
-        conn = self.__sqlite_connection()
+        
+        conn = self.__mysql_connection(
+            user=config["db_config"]["bot"]["user"], 
+            password=config["db_config"]["bot"]["password"], 
+            database=config["db_config"]["bot"]["database"], 
+            host=config["db_config"]["bot"]["host"]
+        )
+        
         cur = conn.cursor()
         
-        cur.execute("INSERT INTO gift_cards (gift_id, gift_code, user, private_token, amount) VALUES (?, ?, ?, ?, ?)", (self.gift_id, self.gift_code, self.user, private_token, self.amount))
+        cur.execute("INSERT INTO giftcards (gift_id, user_id, amount, date, giftcard) VALUES (%s, %s, %s, %s, %s)", (self.gift_id, user_id, self.amount, date, self.gift_code))
         conn.commit()
         conn.close()
         
         return {
-            "status": True,
-            "response": private_token
+            "status": True
         }
-    
-    def search_gift_card(self, private_token = None, user = None):
-        
-        '''
-            This method will search at the database if there's the needed private token, or if it's searched by the username, it will return all the giftcards of the user.
-        '''
 
+    def search_gift_card(self, user_id):
+
+        self.user_id = user_id
         with open('./config.json', encoding="utf-8") as c:
             config = json.load(c)
-
-        self.private_token = private_token
-        self.user = user
-
-        conn = self.__sqlite_connection()
-        cur = conn.cursor()
-
-        if(self.private_token == None and self.user == None):
+            
+        conn = self.__mysql_connection(
+            user=config["db_config"]["bot"]["user"], 
+            password=config["db_config"]["bot"]["password"], 
+            database=config["db_config"]["bot"]["database"], 
+            host=config["db_config"]["bot"]["host"]
+        )
+        
+        query = conn.cursor()
+        query.execute("SELECT * FROM giftcards WHERE user_id = %s", (self.user_id, ))
+        
+        res = query.fetchall()
+        conn.close()
+        
+        if(len(res) > 0):
             return {
-                "status": False
+                "status": True,
+                "response": res
             }
-        elif(self.private_token != None and self.user != None):
-            cur.execute("SELECT * FROM gift_cards WHERE private_token = ? AND user = ?" , (self.private_token, self.user))
-            
-            rows = cur.fetchone()
-            conn.close()
-            
-            if(rows == None):
-                return {
-                    "status": False,
-                    "message": config["language"]["error_messages"]["user_no_giftcards"]
-                }
-            else:
-                return {
-                    "status": True,
-                    "response": {
-                        "id": rows[0],
-                        "gift_id": rows[1],
-                        "gift_code": rows[2],
-                        "user": rows[3],
-                        "private_token": rows[4],
-                        "amount": rows[5]
-                    }
-                }
-            
-        elif(self.private_token == None and self.user != None):
-            
-            # This one will return all giftcards available at the database.
-            cur.execute("SELECT * FROM gift_cards WHERE user = ?" , (self.user,))
-            
-            rows = cur.fetchall()
-            conn.close()
-            
-            if(rows == None):
-                return {
-                    "status": False,
-                    "message": config["language"]["error_messages"]["user_no_giftcards"]
-                }
-            else:
-                return {
-                    "status": True,
-                    "response": rows
-                }
-            
-        elif(self.private_token != None and self.user == None):
-            cur.execute("SELECT * FROM gift_cards WHERE private_token = ?" , (self.private_token,))
-
-            rows = cur.fetchone()
-            conn.close()
-            
-            if(rows == None):
-                return {
-                    "status": False,
-                    "message": config["language"]["error_messages"]["user_no_giftcards"]
-                }
-            else:
-                return {
-                    "status": True,
-                    "response": {
-                        "id": rows[0],
-                        "gift_id": rows[1],
-                        "gift_code": rows[2],
-                        "user": rows[3],
-                        "private_token": rows[4],
-                        "amount": rows[5]
-                    }
-                }
-
-    def save_log(self, user, user_id, command):
+        else: 
+            return {
+                "status": False,
+                "message": config["language"]["error_messages"]["user_no_giftcards"]
+            }
+    
+    def get_gift_card_by_id(self, id):
         
-        '''
-            This method will save logs whenever a command is used by a staff.
-        '''
+        self.id = id
+        with open('./config.json', encoding="utf-8") as c:
+            config = json.load(c)
+            
+        conn = self.__mysql_connection(
+            user=config["db_config"]["bot"]["user"], 
+            password=config["db_config"]["bot"]["password"], 
+            database=config["db_config"]["bot"]["database"], 
+            host=config["db_config"]["bot"]["host"]
+        )
         
-        self.user = user
+        query = conn.cursor()
+        query.execute("SELECT * FROM giftcards WHERE id = %s", (self.id, ))
+        
+        res = query.fetchone()
+        conn.close()
+        
+        return {
+            "status": True,
+            "response": {
+                "user_id": res[2],
+                "gift_code": res[5],
+                "date": res[4],
+                "amount": res[3]
+            }
+        }
+
+    def save_log(self, username, user_id, command):
+        
+        with open('./config.json', encoding="utf-8") as c:
+            config = json.load(c)
+        
+        self.username = username
         self.user_id = user_id
         self.command = command
+        self.bot_name = "Hydracraft Compras"
         date = datetime.datetime.now()
         
-        conn = self.__sqlite_connection()
-        cur = conn.cursor()
-        
-        cur.execute("INSERT INTO logs (user, user_id, command, date) VALUES (?, ?, ?, ?)", (str(self.user), self.user_id, self.command, date))
+        conn = self.__mysql_connection(
+            user=config["db_config"]["bot"]["user"], 
+            password=config["db_config"]["bot"]["password"], 
+            database=config["db_config"]["bot"]["database"], 
+            host=config["db_config"]["bot"]["host"]
+        )
+
+        query = conn.cursor()
+        query.execute("INSERT INTO logs (user, user_id, command, date, bot) VALUES (%s, %s, %s, %s, %s)", (str(self.username), self.user_id, self.command, date, self.bot_name))
         
         conn.commit()
         conn.close()

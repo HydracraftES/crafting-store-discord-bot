@@ -20,6 +20,17 @@
         "thumbnail_url": "https://hydracraft.es/custom/templates/Lithium/uploads/vlf8lpi5qy7co1klozke-1.png"
     },
 
+    "db_config": {
+
+        "bot": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "database": "bot"
+        }
+
+    },
+
     "language": {
         "api_messages": {
             "error_messages": {
@@ -48,7 +59,7 @@
             },
             "create_giftcard": {
                 "command": "crear-giftcard",
-                "description": "Este comando creará una giftcard y un token privado para caso de recuperación."
+                "description": "Este comando creará una giftcard."
             },
             "search_giftcard": {
                 "command": "recuperar-giftcard",
@@ -75,11 +86,11 @@
                     "code": "Código",
                     "amount": "Saldo",
                     "guide_title": "¿Cómo se usa?",
-                    "token": "Token privado"
+                    "date": "Fecha"
                 },
                 "gratitude": "Gracias por su compra, se ha creado una tarjeta regalo con la misma cantidad que hemos recibido de tu código de paysafecard.",
                 "banner": "http://hydracraft.es/botimg/gift_card_banner.png",
-                "instructions": "Para usar el código debes ir a la tienda de HydraCraft y meter en la cesta lo que quieras comprar. Cuando hagas esto verás un cuadro para introducir el código con un botón llamado 'Redimir' a su derecha. Se descontará lo que hayas metido en la cesta con el valor del código de paysafecard. **Se puede usar en varias compras, una vez se acabe todo el saldo se eliminará el código**\nEl token privado es por si quieres ver el estado de tu giftcard, o reclamar el giftcard en caso de pérdida. **No lo pierdas, guárdalo bien y no se lo envíes a nadie, en caso de perder el token y/o el giftcard, abra un ticket en tienda mencionando al developer o a Iván, y ellos te ayudarán.**",
+                "instructions": "Para usar el código debes ir a la tienda de HydraCraft y meter en la cesta lo que quieras comprar. Cuando hagas esto verás un cuadro para introducir el código con un botón llamado 'Redimir' a su derecha. Se descontará lo que hayas metido en la cesta con el valor del código de paysafecard. **Se puede usar en varias compras, una vez se acabe todo el saldo se eliminará el código**",
                 "banner_img": "http://hydracraft.es/botimg/gift_card_banner.png"
             },
             "help_message": {
@@ -92,7 +103,8 @@
             "invalid_command": "Uso correcto del comando: ",
             "bad_usage": "Usa los argumentos del comando.",
             "one_of_them": "Solo necesitamos uno de los 2 argumentos.",
-            "user_no_giftcards": "El usuario no tiene giftcards guardadas en la base de datos."
+            "user_no_giftcards": "No tienes giftcards guardadas.",
+            "fake_owner": "No se te puede enviar las giftcards de otros usuarios."
         }
     }
 }

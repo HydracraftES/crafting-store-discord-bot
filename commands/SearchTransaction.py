@@ -23,7 +23,7 @@ class SearchTransaction(commands.Cog):
         self.bot = bot
         
     @cog_ext.cog_slash(name=commands_config["search_transaction"]["command"], description=commands_config["search_transaction"]["description"], guild_ids=whitelist_servers)
-    async def _search_transactions(self, ctx: SlashContext, nick: str = None, transaction_id: str = None):
+    async def _search_transactions(self, ctx: SlashContext, nick: str, transaction_id: str):
         self.nick = nick
         self.transaction_id = transaction_id
         
@@ -33,7 +33,7 @@ class SearchTransaction(commands.Cog):
         if(validate):
             
             # Saving logs
-            extra_fnc.save_log(user=ctx.author, user_id=ctx.author.id, command=str(commands_config["search_transaction"]["command"]) + " " + self.nick + " " + self.transaction_id)
+            extra_fnc.save_log(username=ctx.author, user_id=ctx.author.id, command=str(commands_config["search_transaction"]["command"]) + " " + self.nick + " " + self.transaction_id)
             
             if(self.nick == None or self.transaction_id == None):
                 await ctx.send("```{} {}{} <nick> <transaction_id>```".format(err_messages["invalid_command"], config["prefix"], commands_config["search_transaction"]["command"]))

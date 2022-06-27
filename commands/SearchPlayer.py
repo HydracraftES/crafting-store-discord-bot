@@ -24,7 +24,7 @@ class SearchPlayer(commands.Cog):
         self.bot = bot
 
     @cog_ext.cog_slash(name=commands_config["get_player_list"]["command"], description=commands_config["get_player_list"]["description"], guild_ids=whitelist_servers)
-    async def _search_player(self, ctx: SlashContext, nick: str = None):
+    async def _search_player(self, ctx: SlashContext, nick: str):
 
         self.nick = nick
         
@@ -34,7 +34,7 @@ class SearchPlayer(commands.Cog):
         if(validate):
             
             # Saving logs
-            extra_fnc.save_log(user=ctx.author, user_id=ctx.author.id, command=str(commands_config["get_player_list"]["command"]) + " " + self.nick )
+            extra_fnc.save_log(username=ctx.author, user_id=ctx.author.id, command=str(commands_config["get_player_list"]["command"]) + " " + self.nick )
             
             if(self.nick == None):
                 await ctx.send("```{} {}{} <nick>```".format(err_messages["invalid_command"], config["prefix"], commands_config["get_player_list"]["command"]))

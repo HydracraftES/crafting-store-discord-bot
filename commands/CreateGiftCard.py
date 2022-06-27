@@ -22,7 +22,7 @@ class CreateGiftCard(commands.Cog):
         self.bot = bot
 
     @cog_ext.cog_slash(name=commands_config["create_giftcard"]["command"], description=commands_config["create_giftcard"]["description"], guild_ids=whitelist_servers)
-    async def _create_gift_card(self, ctx: SlashContext, nick: str = None, amount: str = None):
+    async def _create_gift_card(self, ctx: SlashContext, nick: discord.Member, amount: str):
         
         self.nick = nick
         self.amount = amount
@@ -33,7 +33,7 @@ class CreateGiftCard(commands.Cog):
         if(validate):
             
             # Saving logs
-            extra_fnc.save_log(user=ctx.author, user_id=ctx.author.id, command=str(commands_config["create_giftcard"]["command"]) + " " + self.nick + " " + self.amount)
+            extra_fnc.save_log(username=ctx.author, user_id=ctx.author.id, command=str(commands_config["create_giftcard"]["command"]) + " " + str(self.nick) + " " + self.amount)
             
             if(self.nick == None or self.amount == None):
                 await ctx.send("```{} {}{} <nick>```".format(err_messages["invalid_command"], config["prefix"], commands_config["create_giftcard"]["command"]))
@@ -46,7 +46,6 @@ class CreateGiftCard(commands.Cog):
                     embed.set_thumbnail(url=embed_config["thumbnail_url"])
                     embed.add_field(name=embed_messages["embed_gift_card"]["embed_titles"]["code"], value=response["response"]["gift_code"], inline=False)
                     embed.add_field(name=embed_messages["embed_gift_card"]["embed_titles"]["amount"], value=str(response["response"]["amount"]) + str(embed_messages["crafting_responses"]["currency"]), inline=False)
-                    embed.add_field(name=embed_messages["embed_gift_card"]["embed_titles"]["token"], value=response["response"]["token"], inline=False)
                     embed.add_field(name=embed_messages["embed_gift_card"]["embed_titles"]["guide_title"], value=embed_messages["embed_gift_card"]["instructions"], inline=False)
                     embed.set_footer(text="")
                     embed.set_image(url="http://hydracraft.es/botimg/gift_card_banner.png")

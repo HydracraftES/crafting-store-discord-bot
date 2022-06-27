@@ -86,6 +86,8 @@ class CraftingStore:
         '''
         
             This method will itinerant every single page looking for the transaction id, if it match, it will return the list of information about the bought item.
+            @params: 
+            @return
             
         '''
         
@@ -136,7 +138,7 @@ class CraftingStore:
     def create_gift_card(self, user, amount):
         
         '''
-            This method will create a giftcard and saving it with a private token on a local database (sqlite3)
+        
         '''
         
         self.user = user
@@ -155,15 +157,14 @@ class CraftingStore:
 
                 extra_fnc = ExtraFunctions()
                 
-                saved = extra_fnc.save_gift_card(user=self.user, gift_id=gift_id, gift_code=gift_code, amount=self.amount)
+                saved = extra_fnc.save_gift_card(username=self.user, gift_id=gift_id, gift_code=gift_code, amount=self.amount)
                 
                 if(saved["status"]):
                     return {
                         "status": "success",
                         "response": {
                             "gift_code": gift_code,
-                            "amount": gift_amount,
-                            "token": saved["response"]
+                            "amount": gift_amount
                         }
                     }
                 
