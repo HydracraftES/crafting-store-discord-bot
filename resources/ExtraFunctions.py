@@ -1,8 +1,12 @@
-import json, mysql.connector, hashlib, random, datetime
+import json, mysql.connector, datetime
 
 class ExtraFunctions:
     
     def __mysql_connection(self, user, password, database, host):
+        
+        '''
+            This is a private method which will help to connect to the database, passing through the parameters the account information of the databases.
+        '''
         
         self.host = host
         self.user = user
@@ -19,6 +23,11 @@ class ExtraFunctions:
         return connection
     
     def check_permissions(self, permissions, rol_ids, user_id):
+        
+        '''
+            This method will check if the user given by the parameters has the correct permissions to that.
+        '''
+        
         self.permissions = permissions
         self.rol_ids = rol_ids
         self.user_id = user_id
@@ -40,6 +49,10 @@ class ExtraFunctions:
         return has_rol
     
     def save_gift_card(self, username, gift_id, gift_code, amount):
+        
+        '''
+            This will save the generated giftcard in the database.
+        '''
         
         self.username = username
         self.gift_id = gift_id
@@ -70,6 +83,10 @@ class ExtraFunctions:
         }
 
     def search_gift_card(self, user_id):
+        
+        '''
+            This method will search for user_id in the database looking for giftcards.
+        '''
 
         self.user_id = user_id
         with open('./config.json', encoding="utf-8") as c:
@@ -83,7 +100,7 @@ class ExtraFunctions:
         )
         
         query = conn.cursor()
-        query.execute("SELECT * FROM giftcards WHERE user_id = %s", (self.user_id, ))
+        query.execute("SELECT * FROM giftcards WHERE user_id = %s", (self.user_id,))
         
         res = query.fetchall()
         conn.close()
@@ -100,6 +117,10 @@ class ExtraFunctions:
             }
     
     def get_gift_card_by_id(self, id):
+        
+        '''
+            This method will get the exact giftcard whose is getting searched by the user.
+        '''
         
         self.id = id
         with open('./config.json', encoding="utf-8") as c:
@@ -129,6 +150,10 @@ class ExtraFunctions:
         }
 
     def save_log(self, username, user_id, command):
+        
+        '''
+            This method will save whose executing the command and their account information on the database.
+        '''
         
         with open('./config.json', encoding="utf-8") as c:
             config = json.load(c)

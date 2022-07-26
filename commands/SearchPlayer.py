@@ -46,7 +46,10 @@ class SearchPlayer(commands.Cog):
                     select_options = []
                     for i in response["response"]:
                         if(len(select_options) < 25):
-                            select_options.append(create_select_option(i["packageName"] + " - " + str(datetime.fromtimestamp(i["timestamp"])), value=i["transactionId"]))
+                            if(len(i["packageName"]) < 27):
+                                select_options.append(create_select_option(i["packageName"] + " - " + str(datetime.fromtimestamp(i["timestamp"])), value=i["transactionId"]))
+                            else:
+                                select_options.append(create_select_option(i["packageName"][:27] + "... - " + str(datetime.fromtimestamp(i["timestamp"])), value=i["transactionId"]))
                         else:
                             break
                         

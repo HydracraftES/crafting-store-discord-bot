@@ -22,11 +22,12 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
-        print("\033[91m[!] Someone tried to use an inexistent command: " + str(error))
+        # print("\033[91m[!] Someone tried to use an inexistent command: " + str(error))
+        pass
     
     if isinstance(error, CommandInvokeError):
-        print("\033[91m[!] CommandInvokeError: " + str(error))        
-
+        # print("\033[91m[!] CommandInvokeError: " + str(error))
+        pass       
 extensions = []
 for files in os.listdir('./commands'):
     if(files.endswith('.py')):

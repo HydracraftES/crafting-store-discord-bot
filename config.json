@@ -23,8 +23,8 @@
     "db_config": {
 
         "bot": {
-            "host": "localhost",
-            "user": "root",
+            "host": "",
+            "user": "bot",
             "password": "",
             "database": "bot"
         }

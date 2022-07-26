@@ -3,10 +3,9 @@ from resources.ExtraFunctions import ExtraFunctions
 
 class CraftingStore:
     
-    # Constructor
+    
     def __init__(self):
        
-        # Importing config file
         with open("./config.json", encoding="utf-8") as c:
             config = json.load(c)
 
@@ -20,9 +19,7 @@ class CraftingStore:
     def  __check_api_status(self):
         
         '''
-        
             This method will check if the API is working, if not, it will return an error message.
-        
         '''
         
         r = requests.get(self.url + '/payments', headers={"token": self.token})
@@ -38,9 +35,7 @@ class CraftingStore:
     def get_bought_items(self, user):
         
         '''
-
             This method will return an array with all bought items.
-            
         '''
         self.user = user
         
@@ -83,12 +78,8 @@ class CraftingStore:
     
     def search_transaction(self, user, transaction_id):
         
-        '''
-        
-            This method will itinerant every single page looking for the transaction id, if it match, it will return the list of information about the bought item.
-            @params: 
-            @return
-            
+        '''       
+            This method will itinerant every single page looking for the transaction id, if it match, it will return the list of information about the bought item. 
         '''
         
         self.user = user
@@ -138,7 +129,7 @@ class CraftingStore:
     def create_gift_card(self, user, amount):
         
         '''
-        
+            This method will create a gift card and save it in the database.
         '''
         
         self.user = user
